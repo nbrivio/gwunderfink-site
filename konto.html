@@ -48,12 +48,8 @@
       <article class="k-card">
         <h2>Ort</h2>
         <form id="f-place" class="k-form" novalidate>
-          <label><span>Ortschaft</span>
-            <select name="municipality_id">
-              <option value="4080">Villmergen (5612)</option>
-              <option value="4082">Wohlen (5610)</option>
-              <option value="4063">Bremgarten (5620)</option>
-            </select>
+          <label><span>Postleitzahl</span>
+            <input name="plz" type="text" inputmode="numeric" pattern="[1-9][0-9]{3}" maxlength="4" placeholder="5612" autocomplete="postal-code" required>
           </label>
           <button class="btn btn-forest" type="submit">Ort speichern</button>
           <p class="form-msg" role="status" aria-live="polite"></p>

@@ -1,6 +1,7 @@
 // Gwunderfink · Website 3.0
 // CONFIG.functionsUrl setzen → echter Checkout + serverseitige Trial-Berechnung. Leer = Demo.
-const CONFIG = { functionsUrl: "", consentVersion: "v2-2026-10-20" };
+const CONFIG = { functionsUrl: "", consentVersion: "v2-2026-10-20", orderingEnabled: false };
+document.body.classList.toggle("preorder", !CONFIG.orderingEnabled);
 
 /* ---------- Navigation (mobile) ---------- */
 const toggle = document.querySelector(".nav-toggle");
@@ -31,6 +32,11 @@ function renderTrial(t) {
   window.__trial = t;
 }
 (async () => {
+  if (!CONFIG.orderingEnabled) {
+    const set = (id, v) => { const el = document.getElementById(id); if (el) { el.textContent = v; el.classList.remove("pending"); } };
+    set("d-start", "am Tag deiner Anmeldung"); set("d-trial-end", "einen Monat später"); set("d-first-charge", "am Tag nach dem Gratismonat"); set("d-reminder", "3 Tage vorher per WhatsApp");
+    return;
+  }
   renderTrial(computeTrial());
   if (!CONFIG.functionsUrl) return;
   try {
@@ -50,20 +56,16 @@ if (form) {
     form.querySelectorAll(".invalid").forEach((el) => el.classList.remove("invalid"));
     const fd = new FormData(form);
     const phone = normalizePhone(fd.get("phone"));
-    const municipality = fd.get("municipality_id");
-    if (!municipality) return fail("Bitte wähle deinen Ort.", form.municipality_id);
+    const plz = String(fd.get("plz") || "").trim();
+    if (!/^[1-9]\d{3}$/.test(plz)) return fail("Bitte eine vierstellige Postleitzahl eingeben.", form.plz);
     if (!phone) return fail("Bitte eine Schweizer Mobilnummer eingeben, z. B. +41 79 123 45 67.", form.phone);
     if (!fd.get("consent")) return fail("Bitte bestätige AGB und Datenschutz, damit wir das Abo einrichten dürfen.", form.consent);
 
     const payload = {
-      phone, municipality_id: municipality, first_name: fd.get("first_name") || null,
+      phone, plz, first_name: fd.get("first_name") || null,
       consent_version: CONFIG.consentVersion, consent_text: document.getElementById("consent-text").innerText.trim(),
       shown_trial_end: window.__trial?.trialEnd?.toISOString(), shown_first_charge: window.__trial?.firstCharge?.toISOString(),
     };
-    if (municipality === "waitlist") {
-      if (CONFIG.functionsUrl) fetch(`${CONFIG.functionsUrl}/waitlist`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) }).catch(() => {});
-      return ok("Danke! Wir merken uns deinen Wunsch und melden uns, sobald der Fink in deinem Ort fliegt. Kein Abo, keine Kosten.");
-    }
     if (!CONFIG.functionsUrl) return ok(`Demo-Modus: Jetzt würde Stripe öffnen. Heute CHF 0.00, erste Abbuchung am ${fmt(window.__trial.firstCharge)}.`);
     btn.disabled = true; btn.textContent = "Einen Moment …";
     try {

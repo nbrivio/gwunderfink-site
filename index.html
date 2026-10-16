@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gwunderfink | Lokale Familienideen per WhatsApp. Erster Monat gratis.</title>
-<meta name="description" content="Jeden Donnerstag um 8 Uhr: drei bis fünf geprüfte Ausflüge, Anlässe und Familienideen rund um deinen Ort im Freiamt, direkt in WhatsApp. Erster Monat gratis, danach CHF 2.50 im Monat, jederzeit kündbar.">
+<meta name="description" content="Jeden Donnerstag um 8 Uhr: drei bis fünf geprüfte Ausflüge, Anlässe und Familienideen rund um deinen Ort in der Deutschschweiz, direkt in WhatsApp. Erster Monat gratis, danach CHF 2.50 im Monat, jederzeit kündbar.">
 <meta property="og:title" content="Gwunderfink. Chliine Vogel. Grossi Plän.">
 <meta property="og:description" content="Lokale Familienideen fürs Wochenende, jeden Donnerstag per WhatsApp. Erster Monat gratis.">
 <meta property="og:image" content="https://www.gwunderfink.ch/assets/og.jpg">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="preload" as="image" href="assets/fink-wink.png">
 </head>
-<body>
+<body class="preorder">
 <a class="skip" href="#main">Zum Inhalt</a>
 
 <header class="nav">
@@ -25,7 +25,7 @@
       <img class="av" src="assets/fink-avatar.png" alt="" width="38" height="38">
       <img class="wm" src="assets/wortmarke.png" alt="Gwunderfink" height="34">
     </a>
-    <a class="btn btn-primary btn-sm nav-cta-m" href="#abo">Gratis starten</a>
+    <a class="btn btn-primary btn-sm nav-cta-m only-live" href="#abo">Gratis starten</a><a class="btn btn-primary btn-sm nav-cta-m only-preorder" href="#abo">Bald verfügbar</a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="navlinks" aria-label="Menü">
       <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -34,7 +34,7 @@
       <a href="#so">So arbeitet der Fink</a>
       <a href="#preis">Preis</a>
       <a href="#fragen">Fragen</a>
-      <a class="btn btn-primary btn-sm" href="#abo">Ersten Monat gratis starten</a>
+      <a class="btn btn-primary btn-sm only-live" href="#abo">Ersten Monat gratis starten</a><a class="btn btn-primary btn-sm only-preorder" href="#abo">Bald verfügbar</a>
     </nav>
   </div>
 </header>
@@ -47,9 +47,10 @@
     <div class="hero-copy">
       <p class="claim">Chliine Vogel. Grossi Plän.</p>
       <h1>Dein Wochenende hat soeben einen neuen <mark>besten Freund.</mark></h1>
-      <p class="lead">Jeden Donnerstag um 8 Uhr bringt dir der Gwunderfink drei bis fünf handverlesene Ausflüge, Anlässe und Geheimtipps rund um deinen Ort im Freiamt. Direkt in WhatsApp.</p>
+      <p class="lead">Jeden Donnerstag um 8 Uhr bringt dir der Gwunderfink drei bis fünf handverlesene Ausflüge, Anlässe und Geheimtipps rund um deinen Ort. Direkt in WhatsApp.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary btn-lg" href="#abo">Ersten Monat gratis starten <svg class="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-primary btn-lg only-live" href="#abo">Ersten Monat gratis starten <svg class="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-primary btn-lg only-preorder" href="#abo">Bald verfügbar <svg class="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-outline" href="#ausgabe">Eine Ausgabe anschauen</a>
       </div>
       <ul class="trust">
@@ -65,7 +66,7 @@
       <div class="paper ticket p1" aria-hidden="true"><b>Dampfbahn-Fahrtag</b><small>So 13:00 · Bremgarten · CHF 8</small></div>
       <div class="paper card p2" aria-hidden="true"><b>Kinderatelier</b><small>Sa 10:00 · Wohlen · gratis</small></div>
       <div class="paper note p3" aria-hidden="true"><b>Gut zu wissen</b><small>Der Zirkuszug fährt schon um 9.</small></div>
-      <span class="sticker s-new" aria-hidden="true">Neu im Freiamt</span>
+      <span class="sticker s-new" aria-hidden="true">Bald verfügbar</span>
     </div>
   </div>
 </section>
@@ -122,19 +123,20 @@
 <section class="section">
   <div class="wrap region">
     <div>
-      <h2>Zuerst im Freiamt. Dann weiter.</h2>
-      <p class="lead">Der Gwunderfink startet dort, wo er zuhause ist. Wähle deinen Ort. Oder trag dich ein, wenn er noch fehlt. Sobald genug Familien aus einer Gemeinde dabei sind, fliegt der Fink auch dorthin.</p>
+      <h2>Für die ganze Deutschschweiz.</h2>
+      <p class="lead">Du gibst deine Postleitzahl an, der Fink sucht im Umkreis von rund 15 Kilometern. Ob Dorf oder Stadt, Aargau oder Graubünden: jede Postleitzahl der Deutschschweiz bekommt ihre eigene Ausgabe.</p>
       <ul class="places">
-        <li style="--rot:-2deg">Villmergen</li>
-        <li style="--rot:1.5deg">Wohlen</li>
-        <li style="--rot:-1deg">Bremgarten</li>
-        <li class="soon" style="--rot:2deg">Muri, bald</li>
-        <li class="soon" style="--rot:-1.5deg">Dein Ort?</li>
+        <li style="--rot:-2deg">5612 Villmergen</li>
+        <li style="--rot:1.5deg">8400 Winterthur</li>
+        <li style="--rot:-1deg">6003 Luzern</li>
+        <li style="--rot:2deg">3011 Bern</li>
+        <li style="--rot:-1.5deg">9000 St. Gallen</li>
+        <li class="soon" style="--rot:1deg">Deine PLZ</li>
       </ul>
     </div>
     <figure class="map-fink">
       <img src="assets/fink-karte-sm.png" srcset="assets/fink-karte-sm.png 450w, assets/fink-karte.png 900w" sizes="(max-width:900px) 70vw, 420px" alt="Der Gwunderfink studiert eine Wanderkarte" width="420" height="420" loading="lazy">
-      <span class="paper note tag" aria-hidden="true"><b>Für Familien im Freiamt</b><small>ca. 15 km rund um deinen Ort</small></span>
+      <span class="paper note tag" aria-hidden="true"><b>Für Familien in der Deutschschweiz</b><small>ca. 15 km rund um deine PLZ</small></span>
     </figure>
   </div>
 </section>
@@ -165,17 +167,17 @@
         </ul>
       </aside>
 
-      <form id="signup" class="signup" novalidate>
+      <div class="signup soon-card only-preorder" id="soon">
+        <span class="sticker" style="position:static;display:inline-block;margin-bottom:12px">Bald verfügbar</span>
+        <h2>Der Fink packt noch seine Tasche.</h2>
+        <p>Das Abo lässt sich in Kürze abschliessen: erster Monat gratis, danach CHF 2.50 im Monat, jederzeit kündbar. Bis dahin kannst du dich hier in Ruhe umschauen.</p>
+        <p style="margin:0;color:var(--ink-soft);font-size:var(--fs-0)">Fragen vorab? <a href="mailto:hallo@gwunderfink.ch">hallo@gwunderfink.ch</a></p>
+      </div>
+      <form id="signup" class="signup only-live" novalidate>
         <h2>Hol dir den Fink.</h2>
         <label>
-          <span>Dein Ort</span>
-          <select name="municipality_id" required>
-            <option value="" disabled selected>Ort wählen</option>
-            <option value="4080">Villmergen (5612)</option>
-            <option value="4082">Wohlen (5610)</option>
-            <option value="4063">Bremgarten (5620)</option>
-            <option value="waitlist">Mein Ort ist noch nicht dabei</option>
-          </select>
+          <span>Deine Postleitzahl <small>(Deutschschweiz)</small></span>
+          <input name="plz" type="text" inputmode="numeric" pattern="[1-9][0-9]{3}" maxlength="4" placeholder="5612" autocomplete="postal-code" required>
         </label>
         <div class="two">
           <label>
@@ -208,9 +210,10 @@
   <div class="wrap">
     <div class="section-head"><h2>Fragen, die wir oft hören.</h2></div>
     <div class="faq">
+      <details><summary>Wann kann ich das Abo abschliessen?</summary><p>In Kürze. Sobald es so weit ist, erscheint hier die Anmeldung mit allen Daten zum Gratismonat. Bis dahin kannst du dich auf dieser Seite umschauen.</p></details>
       <details><summary>Wann wird zum ersten Mal abgebucht?</summary><p>Genau einen Monat nach deinem Start. Das Datum siehst du oben in der Abo-Box und nochmals vor dem Abschluss bei Stripe. Drei Tage vorher erinnern wir dich per WhatsApp. Kündigst du vorher, wird nichts abgebucht.</p></details>
       <details><summary>Wie kündige ich?</summary><p>Jederzeit unter <a href="konto.html">Mein Abo</a> oder mit der Antwort STOP in WhatsApp. Das Abo läuft bis zum Ende des bezahlten Monats weiter, danach kommt nichts mehr, auch keine weitere Abbuchung.</p></details>
-      <details><summary>Mein Ort ist nicht dabei. Was nun?</summary><p>Wir starten im Freiamt mit Villmergen, Wohlen und Bremgarten. Wähle «Mein Ort ist noch nicht dabei», dann merken wir uns deinen Wunsch und melden uns, sobald der Fink dort fliegt. Das ist unverbindlich und kostet nichts.</p></details>
+      <details><summary>Für welche Orte gibt es den Gwunderfink?</summary><p>Für jede Postleitzahl der Deutschschweiz. Du gibst deine PLZ an, der Fink sucht im Umkreis von rund 15 Kilometern, auch über Kantonsgrenzen hinweg. Romandie und Tessin folgen später.</p></details>
       <details><summary>Woher kommen die Anlässe?</summary><p>Aus öffentlichen Gemeindeagenden, Veranstalter-Websites, Bibliotheken, Museen, Vereinen und Familienblogs der Region. Wir verlinken immer auf die Originalquelle und übernehmen keine fremden Bilder.</p></details>
       <details><summary>Was passiert mit meiner Nummer?</summary><p>Sie wird ausschliesslich für den Versand und die Verwaltung deines Abos gespeichert. Nie weitergegeben, nie für Werbung. Zahlungsdaten sieht nur Stripe. Alles Weitere in der <a href="legal/datenschutz.html">Datenschutzerklärung</a>.</p></details>
       <details><summary>Wer steckt dahinter?</summary><p>Gwunderfink ist ein Angebot der Ryse Solutions KLG aus dem Aargau, einem kleinen Schweizer Team, das selber Familie hat und am Donnerstag wissen will, was am Wochenende läuft. <a href="legal/impressum.html">Impressum</a></p></details>
@@ -222,8 +225,8 @@
   <div class="wrap">
     <figure class="band"><img src="assets/keyvisual.jpg" srcset="assets/keyvisual-sm.jpg 836w, assets/keyvisual.jpg 1672w" sizes="(max-width:1200px) 100vw, 1200px" alt="Der Gwunderfink fliegt mit seiner Tasche über eine Schweizer Seenlandschaft" width="1672" height="941" loading="lazy"></figure>
     <div class="final">
-      <div><h2>Donnerstag, 8 Uhr. Dein Wochenende ist geplant.</h2><p>Erster Monat gratis, danach CHF 2.50 im Monat. Kündbar, wann du willst.</p></div>
-      <a class="btn btn-forest btn-lg" href="#abo">Jetzt starten</a>
+      <div><h2>Donnerstag, 8 Uhr. Dein Wochenende ist geplant.</h2><p>Erster Monat gratis, danach CHF 2.50 im Monat. Kündbar, wann du willst. Start in Kürze.</p></div>
+      <a class="btn btn-forest btn-lg only-live" href="#abo">Jetzt starten</a><span class="btn btn-forest btn-lg only-preorder" aria-hidden="true">Bald verfügbar</span>
     </div>
   </div>
 </section>

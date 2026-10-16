@@ -296,3 +296,14 @@ footer{padding:48px 0 40px;color:var(--ink-soft);font-size:var(--fs-0)}
   .p2{top:22%;right:-2%}.p3{bottom:2%;left:-2%}
   .nav-cta-m{display:inline-flex}
 }
+
+/* Verfügbarkeit: body.preorder blendet Bestellprozess aus */
+.only-preorder{display:none}
+body.preorder .only-preorder{display:inline-flex}
+body.preorder .nav-cta-m.only-preorder{display:none}
+@media(max-width:820px){body.preorder .nav-cta-m.only-preorder{display:inline-flex}}
+body.preorder div.only-preorder{display:grid}
+body.preorder .only-live{display:none!important}
+.soon-card h2{margin-bottom:.3em}
+.soon-card .sticker{justify-self:start;transform:rotate(-3deg);margin-left:6px}
+.soon-card p{color:var(--ink-soft)}

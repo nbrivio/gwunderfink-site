@@ -31,7 +31,8 @@ $("#f-code").addEventListener("submit", async (e) => {
 
 $("#f-place").addEventListener("submit", async (e) => {
   e.preventDefault(); const f = e.target;
-  try { const d = await api("/update", { municipality_id: f.municipality_id.value }); renderAccount(d.account); msg(f, "Gespeichert. Die nächste Ausgabe kommt für " + d.account.place + ".", true); }
+  const plz = f.plz.value.trim(); if (!/^[1-9]\d{3}$/.test(plz)) return msg(f, "Bitte eine vierstellige Postleitzahl eingeben.");
+  try { const d = await api("/update", { plz }); renderAccount(d.account); msg(f, "Gespeichert. Die nächste Ausgabe kommt für " + d.account.place + ".", true); }
   catch { msg(f, "Speichern hat nicht geklappt."); }
 });
 
@@ -50,7 +51,7 @@ function renderAccount(a) {
   $("#k-name").textContent = a.first_name || "du";
   $("#k-place").textContent = a.place;
   $("#k-next").textContent = a.next_edition;
-  $("#f-place select").value = a.municipality_id;
+  $("#f-place input[name=plz]").value = a.plz || "";
   $("#k-status").textContent = { trial: "Gratismonat", active: "Aktiv", past_due: "Zahlung offen", cancelled: "Gekündigt" }[a.status] || a.status;
   $("#k-plan").textContent = "CHF 2.50 im Monat";
   $("#k-billing").textContent = a.billing || "noch offen";
@@ -58,12 +59,12 @@ function renderAccount(a) {
 }
 
 // Demo ohne Backend
-const DEMO_ACC = { first_name: "Lea", municipality_id: "4080", place: "Villmergen", status: "active", plan: "monthly", billing: "20. November 2026", next_edition: "Donnerstag, 08:00" };
+const DEMO_ACC = { first_name: "Lea", plz: "5612", place: "5612 Villmergen", status: "active", plan: "monthly", billing: "20. November 2026", next_edition: "Donnerstag, 08:00" };
 async function demo(path, body) {
   await new Promise((r) => setTimeout(r, 300));
   if (path === "/request-code") return {};
   if (path === "/verify") return body.code === "123456" ? { token: "demo", account: DEMO_ACC } : Promise.reject(new Error("wrong"));
-  if (path === "/update") { DEMO_ACC.municipality_id = body.municipality_id; DEMO_ACC.place = { 4080: "Villmergen", 4082: "Wohlen", 4063: "Bremgarten" }[body.municipality_id]; return { account: DEMO_ACC }; }
+  if (path === "/update") { DEMO_ACC.plz = body.plz; DEMO_ACC.place = body.plz; return { account: DEMO_ACC }; }
   if (path === "/portal") return {};
   if (path === "/cancel") { DEMO_ACC.status = "cancelled"; return { account: DEMO_ACC }; }
   if (path === "/me") return { account: DEMO_ACC };
