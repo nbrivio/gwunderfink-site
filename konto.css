@@ -1,0 +1,21 @@
+/* Gwunderfink · Mein Abo */
+.konto{max-width:860px}
+.konto .lead{color:#3A4A42}
+.k-form{display:grid;gap:14px;max-width:460px}
+.k-form label{display:grid;gap:6px}
+.k-form label>span{font-weight:700;font-size:.95rem;color:var(--gruen)}
+.k-form input:not([type=radio]):not([type=checkbox]),.k-form select{font:inherit;padding:14px 16px;border-radius:14px;border:2px solid var(--linie);background:#fff;width:100%}
+.k-form input:focus,.k-form select:focus{border-color:var(--blau);outline:0}
+.k-form .btn{justify-self:start}
+.k-form .btn.big{width:100%}
+.k-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:2em}
+.k-card{background:var(--creme);border-radius:24px;padding:24px}
+.k-card h2{font-size:1.4rem;margin-bottom:.6em}
+.k-card .btn{margin-top:4px}
+.k-facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 16px;font-size:.95rem}
+.k-facts dt{color:var(--grau)}
+.k-facts dd{margin:0;font-weight:700;color:var(--gruen)}
+.k-hint{font-size:.85rem;color:var(--grau);margin:12px 0 0}
+.k-danger{grid-column:1/-1;background:#fff;border:2px solid var(--linie)}
+.k-danger p{color:#3A4A42}
+@media(max-width:700px){.k-cards{grid-template-columns:1fr}}

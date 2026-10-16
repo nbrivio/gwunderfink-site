@@ -1,0 +1,49 @@
+/* Gwunderfink · Ausgabe-Seite (mobile first, wird aus WhatsApp geöffnet) */
+body.edition{background:#fff}
+.ed-head{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linie);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.ed-head .logo img{height:32px}
+.ed-meta{margin:0;font-size:.85rem;color:var(--grau);text-align:right}
+.ed-main{max-width:640px;margin:0 auto;padding:28px 16px 40px}
+.ed-main h1{font-size:clamp(1.9rem,6vw,2.6rem);color:var(--gruen);font-weight:600}
+.ed-main h1 em{font-style:normal;background:linear-gradient(transparent 45%,var(--gelb-marker) 45%,var(--gelb-marker) 92%,transparent 92%);padding:0 .1em;border-radius:6px}
+.ed-intro{color:var(--grau);font-size:.95rem;margin-bottom:1.4em}
+
+.ed-filter{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none}
+.chip{flex:0 0 auto;font:700 .9rem var(--text);padding:8px 14px;border-radius:999px;border:1.5px solid var(--gruen);background:transparent;color:var(--gruen);cursor:pointer}
+.chip.is-on{background:var(--gruen);color:#fff}
+
+.tips{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:10px}
+.tip[hidden]{display:none}
+.tip details{background:#fff;border-radius:16px;border:1px solid var(--linie);overflow:hidden}
+.tip summary{list-style:none;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:14px 14px;cursor:pointer}
+.tip summary::-webkit-details-marker{display:none}
+.tip-emoji{width:44px;height:44px;border-radius:12px;background:var(--creme);display:grid;place-items:center;font-size:1.4rem}
+.tip-title{display:block;font-family:var(--display);font-size:1.1rem;font-weight:600;line-height:1.2;color:var(--tinte)}
+.tip-line{display:block;color:var(--grau);font-size:.88rem;margin-top:2px}
+.tip-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.badge{font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--gelb);color:var(--tinte);white-space:nowrap}
+.badge.soft{background:#E8EFE9;color:var(--gruen)}
+.tip-body{padding:0 14px 16px 70px;border-top:1px dashed var(--linie);padding-top:12px}
+.tip-desc{font-size:.95rem}
+.tip-facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.9rem;margin:0 0 14px}
+.tip-facts dt{color:var(--grau)}
+.tip-facts dd{margin:0;font-weight:500}
+.tip-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tip-actions .btn{padding:13px 16px;font-size:.95rem;flex:1}
+.tip-source{font-size:.78rem;color:var(--grau);margin:0}
+@media(max-width:480px){.tip-body{padding-left:14px}.tip-badges{display:none}}
+
+.nice{background:var(--gruen);color:#fff;border-radius:16px;padding:16px 18px;margin-bottom:28px}
+.nice b{display:block;margin-bottom:6px}
+.nice p{margin:0}
+.ed-feedback{text-align:center;padding:12px 0}
+.ed-feedback>p:first-child{font-weight:500}
+.ed-fb-row{display:flex;gap:10px;justify-content:center}
+.fb{font:700 1rem var(--text);padding:12px 22px;border-radius:999px;border:2px solid var(--gruen-hell);background:#fff;color:var(--gruen);cursor:pointer}
+.fb.is-on{background:var(--gelb);border-color:var(--gelb);color:var(--tinte)}
+.ed-foot{max-width:640px;margin:0 auto;padding:0 16px 48px;text-align:center;color:var(--grau);font-size:.88rem}
+.ed-foot .btn{width:100%;margin-bottom:16px}
+.ed-foot nav{display:flex;gap:16px;justify-content:center}
+.ed-foot a{color:var(--gruen)}
+.empty{background:#fff;border-radius:16px;padding:28px;text-align:center;color:var(--grau)}
+@media(max-width:520px){.ed-meta{white-space:nowrap}#ed-week{display:none}}

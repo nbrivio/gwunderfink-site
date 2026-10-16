@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fast geschafft | Gwunderfink</title><link rel="icon" href="assets/fink-avatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a class="logo" href="/"><img class="wm" src="assets/wortmarke.png" alt="Gwunderfink" height="46"></a>
+  <nav class="nav-links" style="display:flex;position:static;background:none;border:0;padding:0;flex-direction:row"><a class="btn btn-outline btn-sm" href="konto.html">Mein Abo</a></nav>
+</div></header>
+<main class="page">
+<h1>Fast geschafft.</h1>
+<p class="lead" style="color:#333">Der Fink hat dir soeben einen sechsstelligen Code per WhatsApp geschickt. Gib ihn hier ein. So wissen wir, dass die Nummer wirklich dir gehört.</p>
+<form id="verify" novalidate>
+  <div class="code"><input name="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" aria-label="Bestätigungscode"><button class="btn btn-primary" type="submit">Bestätigen</button></div>
+  <p class="form-msg" role="status" aria-live="polite"></p>
+</form>
+<p>Kein Code angekommen? Prüfe, ob die Nummer stimmt, oder schreib uns an <a href="mailto:hallo@gwunderfink.ch">hallo@gwunderfink.ch</a>.</p>
+</main>
+<script src="app.js"></script></body></html>

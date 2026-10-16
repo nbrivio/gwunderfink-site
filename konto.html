@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mein Abo | Gwunderfink</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/fink-avatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="konto.css">
+</head>
+<body>
+
+<header class="nav"><div class="wrap nav-in">
+  <a class="logo" href="/"><img class="wm" src="assets/wortmarke.png" alt="Gwunderfink" height="46"></a>
+  <nav class="nav-links" style="display:flex;position:static;background:none;border:0;padding:0;flex-direction:row"><a class="btn btn-outline btn-sm" href="konto.html">Mein Abo</a></nav>
+</div></header>
+<main class="page konto">
+
+  <!-- Schritt 1: Nummer -->
+  <section id="step-phone" class="k-step">
+    <h1>Mein Abo</h1>
+    <p class="lead">Kein Passwort nötig. Gib deine WhatsApp-Nummer ein, der Fink schickt dir einen Code.</p>
+    <form id="f-phone" class="k-form" novalidate>
+      <label><span>Deine WhatsApp-Nummer</span><input name="phone" type="tel" inputmode="tel" placeholder="+41 79 123 45 67" autocomplete="tel" required></label>
+      <button class="btn btn-primary big" type="submit">Code schicken</button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- Schritt 2: Code -->
+  <section id="step-code" class="k-step" hidden>
+    <h1>Code eingeben</h1>
+    <p class="lead">Schau in WhatsApp. Der Code ist 10 Minuten gültig.</p>
+    <form id="f-code" class="k-form" novalidate>
+      <div class="code"><input name="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" aria-label="Code"><button class="btn btn-primary" type="submit">Anmelden</button></div>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- Schritt 3: Konto -->
+  <section id="step-account" class="k-step" hidden>
+    <h1>Hoi <span id="k-name">du</span>.</h1>
+    <p class="lead">Dein Fink ist unterwegs für <b id="k-place"></b>. Nächste Ausgabe: <b id="k-next"></b>.</p>
+
+    <div class="k-cards">
+      <article class="k-card">
+        <h2>Ort</h2>
+        <form id="f-place" class="k-form" novalidate>
+          <label><span>Ortschaft</span>
+            <select name="municipality_id">
+              <option value="4080">Villmergen (5612)</option>
+              <option value="4082">Wohlen (5610)</option>
+              <option value="4063">Bremgarten (5620)</option>
+            </select>
+          </label>
+          <button class="btn btn-forest" type="submit">Ort speichern</button>
+          <p class="form-msg" role="status" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="k-card">
+        <h2>Abo</h2>
+        <dl class="k-facts">
+          <dt>Status</dt><dd id="k-status"></dd>
+          <dt>Plan</dt><dd id="k-plan"></dd>
+          <dt>Nächste Abbuchung</dt><dd id="k-billing"></dd>
+        </dl>
+        <button class="btn btn-outline" id="b-portal" type="button">Zahlung & Rechnungen</button>
+        <p class="k-hint">Plan wechseln, Zahlungsmittel ändern oder kündigen: alles im sicheren Stripe-Portal.</p>
+      </article>
+
+      <article class="k-card k-danger">
+        <h2>Pause oder Abmelden</h2>
+        <p>Abmelden geht auch direkt in WhatsApp mit <b>STOP</b>. Hier kündigst du auf das Ende der laufenden Periode; bis dahin kommen die Ausgaben weiter.</p>
+        <button class="btn btn-outline" id="b-cancel" type="button">Abo kündigen</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </article>
+    </div>
+  </section>
+
+</main>
+<footer><div class="wrap"><div class="foot-legal" style="border-top:1px solid var(--line);padding-top:24px"><span>Ryse Solutions KLG · <a href="mailto:hallo@gwunderfink.ch">hallo@gwunderfink.ch</a></span><span><a href="legal/index.html">Rechtliches</a> · <a href="/">gwunderfink.ch</a> · © 2026</span></div></div></footer>
+
+<script src="konto.js"></script>
+</body>
+</html>

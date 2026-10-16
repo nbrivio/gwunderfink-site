@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /konto.html
+Disallow: /danke.html
+Disallow: /ausgabe.html
+Sitemap: https://gwunderfink.ch/sitemap.xml

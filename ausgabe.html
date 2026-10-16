@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deine Ausgabe | Gwunderfink</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/fink-avatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ausgabe.css">
+</head>
+<body class="edition">
+<header class="ed-head">
+  <a class="logo" href="/"><img class="wm" src="assets/wortmarke.png" alt="Gwunderfink" style="height:32px;width:auto"></a>
+  <p class="ed-meta"><span id="ed-place">Villmergen</span><span id="ed-week"> · Wochenende 25./26. Oktober</span></p>
+</header>
+
+<main class="ed-main">
+  <h1 id="ed-title">Fünf Ideen fürs Wochenende rund um <em>Villmergen</em></h1>
+  <p class="ed-intro">Alle Anlässe geprüft am <span id="ed-checked">Donnerstag, 06:30</span>. Tippe auf einen Tipp für Details, Anmeldung und Route.</p>
+
+  <div class="ed-filter" role="group" aria-label="Filter">
+    <button class="chip is-on" data-f="all">Alle</button>
+    <button class="chip" data-f="sa">Samstag</button>
+    <button class="chip" data-f="so">Sonntag</button>
+    <button class="chip" data-f="indoor">Drinnen</button>
+    <button class="chip" data-f="free">Gratis</button>
+  </div>
+
+  <ol class="tips" id="tips"></ol>
+
+  <aside class="nice" id="nice">
+    <b>💡 Gut zu wissen</b>
+    <p id="nice-text"></p>
+  </aside>
+
+  <section class="ed-feedback">
+    <p>War diese Ausgabe hilfreich?</p>
+    <div class="ed-fb-row">
+      <button class="fb" data-v="up">👍 Ja</button>
+      <button class="fb" data-v="down">👎 Nicht so</button>
+    </div>
+    <p class="form-msg" role="status" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer class="ed-foot">
+  <button class="btn btn-outline" id="share">Ausgabe teilen</button>
+  <p>Du erhältst den Gwunderfink jeden Donnerstag um 8 Uhr. Ort oder Abo ändern: <a href="konto.html">Mein Abo</a> · Abmelden: STOP in WhatsApp.</p>
+  <nav><a href="legal/impressum.html">Impressum</a><a href="legal/datenschutz.html">Datenschutz</a></nav>
+</footer>
+
+<template id="tip-tpl">
+  <li class="tip">
+    <details>
+      <summary>
+        <span class="tip-emoji"></span>
+        <span class="tip-main">
+          <b class="tip-title"></b>
+          <span class="tip-line"></span>
+        </span>
+        <span class="tip-badges"></span>
+      </summary>
+      <div class="tip-body">
+        <p class="tip-desc"></p>
+        <dl class="tip-facts"></dl>
+        <div class="tip-actions">
+          <a class="btn btn-primary tip-link" target="_blank" rel="noopener">Zum Veranstalter</a>
+          <a class="btn btn-outline tip-route" target="_blank" rel="noopener">Route</a>
+        </div>
+        <p class="tip-source">Quelle: <a target="_blank" rel="noopener"></a></p>
+      </div>
+    </details>
+  </li>
+</template>
+
+<script src="ausgabe.js"></script>
+</body>
+</html>
