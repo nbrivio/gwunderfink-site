@@ -1,5 +1,6 @@
 // Gwunderfink · Mein Abo (ohne Passwort: Nummer, Code via WhatsApp, Session-Token)
-const CONFIG = { functionsUrl: "" };
+// anonKey ist der öffentliche Publishable Key des Projekts, siehe app.js.
+const CONFIG = { functionsUrl: "", anonKey: "" };
 const $ = (s, r = document) => r.querySelector(s);
 let token = sessionStorage.getItem("gf_token");
 let phone = "";
@@ -8,7 +9,7 @@ function show(id) { document.querySelectorAll(".k-step").forEach((s) => (s.hidde
 function msg(form, text, ok) { const m = $(".form-msg", form); m.className = "form-msg " + (ok ? "ok" : "err"); m.textContent = text; }
 async function api(path, body) {
   if (!CONFIG.functionsUrl) return demo(path, body);
-  const r = await fetch(`${CONFIG.functionsUrl}/konto${path}`, { method: "POST", headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify(body ?? {}) });
+  const r = await fetch(`${CONFIG.functionsUrl}/konto${path}`, { method: "POST", headers: { "content-type": "application/json", ...(CONFIG.anonKey ? { apikey: CONFIG.anonKey } : {}), ...(token ? { authorization: `Bearer ${token}` } : { ...(CONFIG.anonKey ? { authorization: `Bearer ${CONFIG.anonKey}` } : {}) }) }, body: JSON.stringify(body ?? {}) });
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.error || "server");
   return d;
@@ -44,7 +45,7 @@ $("#b-cancel").addEventListener("click", async (e) => {
   const card = e.target.closest(".k-card");
   if (!confirm("Abo auf das Ende der laufenden Periode kündigen?")) return;
   try { const d = await api("/cancel"); renderAccount(d.account); msg(card, "Gekündigt. Bis " + d.account.billing + " kommen die Ausgaben noch.", true); }
-  catch { msg(card, "Kündigen hat nicht geklappt. Schreib uns an hallo@gwunderfink.ch."); }
+  catch { msg(card, "Kündigen hat nicht geklappt. Schreib uns an support@gwunderfink.ch."); }
 });
 
 function renderAccount(a) {

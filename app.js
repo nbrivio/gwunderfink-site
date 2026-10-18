@@ -1,6 +1,9 @@
 // Gwunderfink · Website 3.0
 // CONFIG.functionsUrl setzen → echter Checkout + serverseitige Trial-Berechnung. Leer = Demo.
-const CONFIG = { functionsUrl: "", consentVersion: "v2-2026-10-20", orderingEnabled: false };
+// anonKey ist der öffentliche Publishable Key des Projekts. Er darf im Browser stehen,
+// die Daten schützt Row Level Security. Ohne ihn weist Supabase den Aufruf mit 401 ab.
+const CONFIG = { functionsUrl: "", anonKey: "", consentVersion: "v2-2026-10-20", orderingEnabled: false };
+const fnHeaders = (extra = {}) => ({ ...(CONFIG.anonKey ? { apikey: CONFIG.anonKey, authorization: `Bearer ${CONFIG.anonKey}` } : {}), ...extra });
 document.body.classList.toggle("preorder", !CONFIG.orderingEnabled);
 
 /* ---------- Navigation (mobile) ---------- */
@@ -40,7 +43,7 @@ function renderTrial(t) {
   renderTrial(computeTrial());
   if (!CONFIG.functionsUrl) return;
   try {
-    const r = await fetch(`${CONFIG.functionsUrl}/trial-preview`);
+    const r = await fetch(`${CONFIG.functionsUrl}/trial-preview`, { headers: fnHeaders() });
     if (r.ok) { const d = await r.json(); renderTrial({ start: new Date(d.start), trialEnd: new Date(d.trial_end), firstCharge: new Date(d.first_charge), reminder: new Date(d.reminder) }); }
   } catch {}
 })();
@@ -69,12 +72,12 @@ if (form) {
     if (!CONFIG.functionsUrl) return ok(`Demo-Modus: Jetzt würde Stripe öffnen. Heute CHF 0.00, erste Abbuchung am ${fmt(window.__trial.firstCharge)}.`);
     btn.disabled = true; btn.textContent = "Einen Moment …";
     try {
-      const r = await fetch(`${CONFIG.functionsUrl}/stripe-checkout`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
+      const r = await fetch(`${CONFIG.functionsUrl}/stripe-checkout`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify(payload) });
       const data = await r.json();
       if (!r.ok || !data.url) throw new Error(data.error || "server");
       location.href = data.url;
     } catch (err) {
-      fail(err.message === "blocked" ? "Diese Nummer kann sich nicht anmelden. Schreib uns: hallo@gwunderfink.ch" : "Das hat nicht geklappt. Versuch es gleich nochmal oder schreib uns an hallo@gwunderfink.ch.");
+      fail(err.message === "blocked" ? "Diese Nummer kann sich nicht anmelden. Schreib uns: support@gwunderfink.ch" : "Das hat nicht geklappt. Versuch es gleich nochmal oder schreib uns an support@gwunderfink.ch.");
       btn.disabled = false; btn.textContent = "Ersten Monat gratis starten";
     }
   });
@@ -98,10 +101,10 @@ if (codeForm) {
     const code = codeForm.code.value.trim();
     if (!/^\d{6}$/.test(code)) { msg.className = "form-msg err"; msg.textContent = "Der Code hat sechs Ziffern."; return; }
     if (!CONFIG.functionsUrl) { msg.className = "form-msg ok"; msg.textContent = "Demo-Modus: Nummer wäre jetzt bestätigt."; return; }
-    const r = await fetch(`${CONFIG.functionsUrl}/verify-code`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ subscriber_id: sid, code }) });
+    const r = await fetch(`${CONFIG.functionsUrl}/verify-code`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify({ subscriber_id: sid, code }) });
     const d = await r.json();
     msg.className = "form-msg " + (d.ok ? "ok" : "err");
-    msg.textContent = d.ok ? "Nummer bestätigt. Am Donnerstag um 8 Uhr kommt deine erste Ausgabe." : (d.error === "expired" ? "Der Code ist abgelaufen. Schreib uns an hallo@gwunderfink.ch, wir schicken dir einen neuen." : "Der Code stimmt nicht. Schau nochmal in WhatsApp nach.");
+    msg.textContent = d.ok ? "Nummer bestätigt. Am Donnerstag um 8 Uhr kommt deine erste Ausgabe." : (d.error === "expired" ? "Der Code ist abgelaufen. Schreib uns an support@gwunderfink.ch, wir schicken dir einen neuen." : "Der Code stimmt nicht. Schau nochmal in WhatsApp nach.");
   });
 }
 

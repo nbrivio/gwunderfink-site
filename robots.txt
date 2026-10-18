@@ -1,3 +1,6 @@
+# GwunderfinkBot sammelt öffentliche Veranstaltungstermine für den Gwunderfink-Newsletter.
+# Fragen oder Ausschluss gewünscht? abuse@gwunderfink.ch
+
 User-agent: *
 Allow: /
 Disallow: /konto.html
