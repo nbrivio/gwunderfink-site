@@ -67,25 +67,66 @@ if (form) {
     if (!phone) return fail("Bitte eine Schweizer Mobilnummer eingeben, z. B. +41 79 123 45 67.", form.phone);
     if (!fd.get("consent")) return fail("Bitte bestätige AGB und Datenschutz, damit wir das Abo einrichten dürfen.", form.consent);
 
+    const firstName = fd.get("first_name") || null;
     const payload = {
-      phone, plz, first_name: fd.get("first_name") || null,
+      phone, plz, first_name: firstName,
       consent_version: CONFIG.consentVersion, consent_text: document.getElementById("consent-text").innerText.trim(),
       shown_trial_end: window.__trial?.trialEnd?.toISOString(), shown_first_charge: window.__trial?.firstCharge?.toISOString(),
     };
     if (!CONFIG.functionsUrl) return ok(`Demo-Modus: Jetzt würde Stripe öffnen. Heute CHF 0.00, erste Abbuchung am ${fmt(window.__trial.firstCharge)}.`);
     btn.disabled = true; btn.textContent = "Einen Moment …";
+
+    // Region prüfen: gwunderfink startet im Aargau. Andere Regionen kommen auf die Interessensliste,
+    // damit niemand ein Abo abschliesst, für das wir noch keine Tipps haben.
+    try {
+      const cr = await fetch(`${CONFIG.functionsUrl}/plz-check?plz=${encodeURIComponent(plz)}`, { headers: fnHeaders() });
+      const c = await cr.json();
+      if (!c.serviceable) { btn.disabled = false; btn.textContent = "Ersten Monat gratis starten"; return offerWaitlist(plz, phone, firstName, c); }
+    } catch { /* Netz unsicher: weiter zum Checkout, der Server sperrt Nicht-Aargau ohnehin */ }
+
     try {
       const r = await fetch(`${CONFIG.functionsUrl}/stripe-checkout`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify(payload) });
       const data = await r.json();
       if (!r.ok || !data.url) throw new Error(data.error || "server");
       location.href = data.url;
     } catch (err) {
-      fail(err.message === "blocked" ? "Diese Nummer kann sich nicht anmelden. Schreib uns: support@gwunderfink.ch" : "Das hat nicht geklappt. Versuch es gleich nochmal oder schreib uns an support@gwunderfink.ch.");
       btn.disabled = false; btn.textContent = "Ersten Monat gratis starten";
+      if (err.message === "region") return offerWaitlist(plz, phone, firstName, null);
+      fail(err.message === "blocked" ? "Diese Nummer kann sich nicht anmelden. Schreib uns: support@gwunderfink.ch" : "Das hat nicht geklappt. Versuch es gleich nochmal oder schreib uns an support@gwunderfink.ch.");
     }
   });
   function fail(text, el) { msg.className = "form-msg err"; msg.textContent = text; if (el) { el.classList?.add("invalid"); el.focus?.(); } }
   function ok(text) { msg.className = "form-msg ok"; msg.textContent = text; }
+
+  // Interessensliste: freundliche Weiche für Orte ausserhalb des bedienten Gebiets.
+  function offerWaitlist(plz, phone, firstName, info) {
+    const place = info && info.found && info.name ? `${info.name}${info.canton ? " (" + info.canton + ")" : ""}` : `PLZ ${plz}`;
+    msg.className = "form-msg"; msg.textContent = "";
+    let box = document.getElementById("interest-box");
+    if (!box) { box = document.createElement("div"); box.id = "interest-box"; box.className = "interest-box"; form.appendChild(box); }
+    box.hidden = false;
+    box.innerHTML =
+      '<h3>Der Fink ist noch nicht bei dir.</h3>' +
+      '<p>gwunderfink startet im Kanton Aargau. ' + (info && info.found ? place + ' ist noch nicht dabei.' : 'Diese Region kennt der Fink noch nicht.') +
+      ' Trag dich ein, und wir melden uns, sobald wir deine Gegend aufschalten. So entscheidest du mit, welche Region als Nächstes kommt.</p>' +
+      '<button type="button" class="btn btn-primary btn-lg" id="interest-btn">Benachrichtige mich</button>' +
+      '<p class="form-msg" id="interest-msg" role="status" aria-live="polite"></p>';
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    const ibtn = box.querySelector("#interest-btn");
+    const imsg = box.querySelector("#interest-msg");
+    ibtn.addEventListener("click", async () => {
+      ibtn.disabled = true; ibtn.textContent = "Einen Moment …";
+      try {
+        const r = await fetch(`${CONFIG.functionsUrl}/waitlist-join`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify({ phone, plz, first_name: firstName }) });
+        const d = await r.json();
+        if (!r.ok || !d.ok) throw new Error(d.error || "server");
+        box.innerHTML = '<h3>Du stehst auf der Liste' + (d.name ? " für " + d.name : "") + '.</h3><p>Der Fink meldet sich, sobald deine Region aufgeschaltet ist. Versprochen, kein Spam.</p>';
+      } catch {
+        imsg.className = "form-msg err"; imsg.textContent = "Das hat nicht geklappt. Schreib uns an hallo@gwunderfink.ch.";
+        ibtn.disabled = false; ibtn.textContent = "Benachrichtige mich";
+      }
+    });
+  }
 }
 function normalizePhone(raw) {
   let p = String(raw || "").replace(/[\s\-()/.]/g, "");
@@ -113,3 +154,20 @@ if (codeForm) {
 
 /* ---------- Ladesequenz ---------- */
 (document.fonts?.ready ?? Promise.resolve()).then(() => requestAnimationFrame(() => document.body.classList.add("ready")));
+
+/* ---------- Scroll-Animationen ----------
+   Dezent: Inhalte steigen beim Hereinscrollen leicht auf und blenden ein.
+   Respektiert reduzierte Bewegung und greift nur unterhalb des Heros, damit
+   nichts flackert. Ohne IntersectionObserver bleibt alles sichtbar. */
+(() => {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+  const sel = "[data-reveal], .section .section-head, .section figure, .price-card, .signup, .soon-card, .faq details";
+  const els = Array.from(document.querySelectorAll(sel));
+  if (!els.length) return;
+  els.forEach((el) => el.classList.add("reveal"));
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+  els.forEach((el) => io.observe(el));
+})();

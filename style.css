@@ -307,3 +307,17 @@ body.preorder .only-live{display:none!important}
 .soon-card h2{margin-bottom:.3em}
 .soon-card .sticker{justify-self:start;transform:rotate(-3deg);margin-left:6px}
 .soon-card p{color:var(--ink-soft)}
+
+/* ---------- Interessensliste (Region ausserhalb Aargau) ---------- */
+.interest-box{margin-top:20px;padding:24px;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-paper);animation:interestIn .5s cubic-bezier(.22,.61,.36,1) both}
+.interest-box h3{margin:0 0 .3em}
+.interest-box p{margin:0 0 1.1em;color:var(--ink-soft);font-size:var(--fs-0)}
+.interest-box .btn{width:100%}
+.interest-box .form-msg{margin-top:12px}
+@keyframes interestIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- Dezente Scroll-Animationen ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+}
