@@ -2,7 +2,10 @@
 // CONFIG.functionsUrl setzen → echter Checkout + serverseitige Trial-Berechnung. Leer = Demo.
 // anonKey ist der öffentliche Publishable Key des Projekts. Er darf im Browser stehen,
 // die Daten schützt Row Level Security. Ohne ihn weist Supabase den Aufruf mit 401 ab.
-const CONFIG = { functionsUrl: "", anonKey: "", consentVersion: "v2-2026-10-20", orderingEnabled: false };
+// Vorschau-Schalter: Bestellformular nur mit ?preview in der URL aktiv.
+// Normale Besucher sehen weiter "Bald verfügbar". Go-live: orderingEnabled auf true setzen.
+const PREVIEW = new URLSearchParams(location.search).has("preview");
+const CONFIG = { functionsUrl: "https://amfsmbjarmkavhzsbrdd.supabase.co/functions/v1", anonKey: "sb_publishable_GqIq-RfYFPHlBs31uHXLkQ_cIu2qTQi", consentVersion: "v2-2026-10-20", orderingEnabled: PREVIEW };
 const fnHeaders = (extra = {}) => ({ ...(CONFIG.anonKey ? { apikey: CONFIG.anonKey, authorization: `Bearer ${CONFIG.anonKey}` } : {}), ...extra });
 document.body.classList.toggle("preorder", !CONFIG.orderingEnabled);
 
