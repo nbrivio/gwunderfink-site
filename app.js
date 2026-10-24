@@ -1,11 +1,11 @@
-// Gwunderfink · Website 3.0
-// CONFIG.functionsUrl setzen → echter Checkout + serverseitige Trial-Berechnung. Leer = Demo.
+// Gwunderfink · Website 3.1 (Testphase: Gratis-Newsletter, kein Abo)
+// CONFIG.functionsUrl setzen → echte Anmeldung. Leer = Demo.
 // anonKey ist der öffentliche Publishable Key des Projekts. Er darf im Browser stehen,
 // die Daten schützt Row Level Security. Ohne ihn weist Supabase den Aufruf mit 401 ab.
-// Vorschau-Schalter: Bestellformular nur mit ?preview in der URL aktiv.
-// Normale Besucher sehen weiter "Bald verfügbar". Go-live: orderingEnabled auf true setzen.
+// Vorschau-Schalter: Anmeldeformular nur mit ?preview in der URL aktiv. Normale Besucher
+// sehen "Bald verfügbar", bis WhatsApp live ist. Go-live: orderingEnabled auf true setzen.
 const PREVIEW = new URLSearchParams(location.search).has("preview");
-const CONFIG = { functionsUrl: "https://amfsmbjarmkavhzsbrdd.supabase.co/functions/v1", anonKey: "sb_publishable_GqIq-RfYFPHlBs31uHXLkQ_cIu2qTQi", consentVersion: "v2-2026-10-20", orderingEnabled: PREVIEW };
+const CONFIG = { functionsUrl: "https://amfsmbjarmkavhzsbrdd.supabase.co/functions/v1", anonKey: "sb_publishable_GqIq-RfYFPHlBs31uHXLkQ_cIu2qTQi", consentVersion: "newsletter-v1-2026-10-24", orderingEnabled: PREVIEW };
 const fnHeaders = (extra = {}) => ({ ...(CONFIG.anonKey ? { apikey: CONFIG.anonKey, authorization: `Bearer ${CONFIG.anonKey}` } : {}), ...extra });
 document.body.classList.toggle("preorder", !CONFIG.orderingEnabled);
 
@@ -17,45 +17,15 @@ if (toggle && links) {
   links.addEventListener("click", (e) => { if (e.target.closest("a")) { links.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); } });
 }
 
-/* ---------- Trial-Daten ----------
-   Regel (Vorschlag, vor Livegang verbindlich festlegen, siehe 01_Konzept/abo-regeln.md):
-   Start = heute (Europe/Zurich). Gratis bis einschliesslich Vortag des gleichen Kalendertags im Folgemonat.
-   Erste Abbuchung = gleicher Kalendertag im Folgemonat; existiert er nicht (29. bis 31.), dann der letzte Tag des Folgemonats.
-   Diese Client-Rechnung ist nur Vorschau; verbindlich ist /trial-preview vom Server. */
-function computeTrial(start = new Date()) {
-  const y = start.getFullYear(), m = start.getMonth(), d = start.getDate();
-  const lastOfNext = new Date(y, m + 2, 0).getDate();
-  const firstCharge = new Date(y, m + 1, Math.min(d, lastOfNext));
-  const trialEnd = new Date(firstCharge); trialEnd.setDate(trialEnd.getDate() - 1);
-  const reminder = new Date(firstCharge); reminder.setDate(reminder.getDate() - 3);
-  return { start, trialEnd, firstCharge, reminder };
-}
-const fmt = (dt) => new Intl.DateTimeFormat("de-CH", { day: "numeric", month: "long", year: "numeric" }).format(dt);
-function renderTrial(t) {
-  const set = (id, v) => { const el = document.getElementById(id); if (el) { el.textContent = v; el.classList.remove("pending"); } };
-  set("d-start", fmt(t.start)); set("d-trial-end", fmt(t.trialEnd)); set("d-first-charge", fmt(t.firstCharge)); set("d-reminder", fmt(t.reminder) + " per WhatsApp");
-  const s = document.getElementById("s-first-charge"); if (s) s.textContent = fmt(t.firstCharge);
-  window.__trial = t;
-}
-(async () => {
-  if (!CONFIG.orderingEnabled) {
-    const set = (id, v) => { const el = document.getElementById(id); if (el) { el.textContent = v; el.classList.remove("pending"); } };
-    set("d-start", "am Tag deiner Anmeldung"); set("d-trial-end", "einen Monat später"); set("d-first-charge", "am Tag nach dem Gratismonat"); set("d-reminder", "3 Tage vorher per WhatsApp");
-    return;
-  }
-  renderTrial(computeTrial());
-  if (!CONFIG.functionsUrl) return;
-  try {
-    const r = await fetch(`${CONFIG.functionsUrl}/trial-preview`, { headers: fnHeaders() });
-    if (r.ok) { const d = await r.json(); renderTrial({ start: new Date(d.start), trialEnd: new Date(d.trial_end), firstCharge: new Date(d.first_charge), reminder: new Date(d.reminder) }); }
-  } catch {}
-})();
-
-/* ---------- Anmeldung ---------- */
+/* ---------- Anmeldung (Gratis-Newsletter) ----------
+   In der Testphase läuft die Anmeldung kostenlos: Nummer und Ort eintragen, Haken setzen,
+   danach bestätigt ein sechsstelliger Code per WhatsApp, dass die Nummer wirklich dir gehört
+   (Double-Opt-in). Kein Zahlungsmittel, kein Abo. */
 const form = document.getElementById("signup");
 if (form) {
   const msg = form.querySelector(".form-msg");
   const btn = form.querySelector("button.btn");
+  const CTA = "Gratis anmelden";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     msg.className = "form-msg"; msg.textContent = "";
@@ -65,33 +35,34 @@ if (form) {
     const plz = String(fd.get("plz") || "").trim();
     if (!/^[1-9]\d{3}$/.test(plz)) return fail("Bitte eine vierstellige Postleitzahl eingeben.", form.plz);
     if (!phone) return fail("Bitte eine Schweizer Mobilnummer eingeben, z. B. +41 79 123 45 67.", form.phone);
-    if (!fd.get("consent")) return fail("Bitte bestätige AGB und Datenschutz, damit wir das Abo einrichten dürfen.", form.consent);
+    if (!fd.get("consent")) return fail("Bitte bestätige AGB und Datenschutz, damit wir dich eintragen dürfen.", form.consent);
 
     const firstName = fd.get("first_name") || null;
     const payload = {
       phone, plz, first_name: firstName,
       consent_version: CONFIG.consentVersion, consent_text: document.getElementById("consent-text").innerText.trim(),
-      shown_trial_end: window.__trial?.trialEnd?.toISOString(), shown_first_charge: window.__trial?.firstCharge?.toISOString(),
     };
-    if (!CONFIG.functionsUrl) return ok(`Demo-Modus: Jetzt würde Stripe öffnen. Heute CHF 0.00, erste Abbuchung am ${fmt(window.__trial.firstCharge)}.`);
+    if (!CONFIG.functionsUrl) return ok("Demo-Modus: Jetzt würde der Fink dir einen Bestätigungscode per WhatsApp schicken.");
     btn.disabled = true; btn.textContent = "Einen Moment …";
 
     // Region prüfen: gwunderfink startet im Aargau. Andere Regionen kommen auf die Interessensliste,
-    // damit niemand ein Abo abschliesst, für das wir noch keine Tipps haben.
+    // damit niemand sich für einen Newsletter einträgt, für den wir noch keine Tipps haben.
     try {
       const cr = await fetch(`${CONFIG.functionsUrl}/plz-check?plz=${encodeURIComponent(plz)}`, { headers: fnHeaders() });
       const c = await cr.json();
-      if (!c.serviceable) { btn.disabled = false; btn.textContent = "Ersten Monat gratis starten"; return offerWaitlist(plz, phone, firstName, c); }
-    } catch { /* Netz unsicher: weiter zum Checkout, der Server sperrt Nicht-Aargau ohnehin */ }
+      if (!c.serviceable) { btn.disabled = false; btn.textContent = CTA; return offerWaitlist(plz, phone, firstName, c); }
+    } catch { /* Netz unsicher: weiter, der Server sperrt Nicht-Aargau ohnehin */ }
 
     try {
       const r = await fetch(`${CONFIG.functionsUrl}/stripe-checkout`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify(payload) });
       const data = await r.json();
-      if (!r.ok || !data.url) throw new Error(data.error || "server");
-      location.href = data.url;
+      if (r.ok && data.free && data.sid) { location.href = `danke.html?sid=${encodeURIComponent(data.sid)}&free=1`; return; }
+      if (r.ok && data.url) { location.href = data.url; return; } // Bezahl-Abo, falls später wieder aktiv
+      throw new Error(data.error || "server");
     } catch (err) {
-      btn.disabled = false; btn.textContent = "Ersten Monat gratis starten";
+      btn.disabled = false; btn.textContent = CTA;
       if (err.message === "region") return offerWaitlist(plz, phone, firstName, null);
+      if (err.message === "exists") return ok("Diese Nummer ist schon angemeldet. Der Fink meldet sich am Donnerstag.");
       fail(err.message === "blocked" ? "Diese Nummer kann sich nicht anmelden. Schreib uns: support@gwunderfink.ch" : "Das hat nicht geklappt. Versuch es gleich nochmal oder schreib uns an support@gwunderfink.ch.");
     }
   });
@@ -135,11 +106,17 @@ function normalizePhone(raw) {
   return /^\+41(7[5-9])\d{7}$/.test(p) ? p : null; // nur CH-Mobilnummern (WhatsApp)
 }
 
-/* ---------- Danke-Seite: Code ---------- */
+/* ---------- Danke-Seite: Code ----------
+   Bei der Gratis-Anmeldung (free=1) löst die Seite den Code-Versand selbst aus, da hier
+   kein Bezahl-Schritt dazwischenliegt. Danach bestätigt der eingegebene Code die Nummer. */
 const codeForm = document.getElementById("verify");
 if (codeForm) {
   const sid = new URLSearchParams(location.search).get("sid");
+  const isFree = new URLSearchParams(location.search).get("free") === "1";
   const msg = codeForm.querySelector(".form-msg");
+  if (sid && isFree && CONFIG.functionsUrl) {
+    fetch(`${CONFIG.functionsUrl}/verify-send`, { method: "POST", headers: fnHeaders({ "content-type": "application/json" }), body: JSON.stringify({ subscriber_id: sid }) }).catch(() => {});
+  }
   codeForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const code = codeForm.code.value.trim();
