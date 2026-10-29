@@ -1,0 +1,40 @@
+{
+  "paare": [
+    {
+      "name": "Fliesstext auf Papier",
+      "vorn": "ink",
+      "hinten": "paper",
+      "ziel": 7.0
+    },
+    {
+      "name": "Fliesstext auf Creme",
+      "vorn": "ink",
+      "hinten": "cream",
+      "ziel": 7.0
+    },
+    {
+      "name": "Sekundaertext Papier",
+      "vorn": "ink-soft",
+      "hinten": "paper",
+      "ziel": 7.0
+    },
+    {
+      "name": "Sekundaertext Creme",
+      "vorn": "ink-soft",
+      "hinten": "cream",
+      "ziel": 7.0
+    },
+    {
+      "name": "Akzent Forest auf Papier",
+      "vorn": "forest",
+      "hinten": "paper",
+      "ziel": 4.5
+    },
+    {
+      "name": "Creme auf Forest",
+      "vorn": "cream",
+      "hinten": "forest",
+      "ziel": 4.5
+    }
+  ]
+}

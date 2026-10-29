@@ -7,7 +7,7 @@
   /* Markenfarben (verbindlich) */
   --forest:#0E4D3E; --moss:#6E8F72; --cream:#F5ECDD; --sunny:#F4C94A; --coral:#EC7E69; --sky:#8FB8D8;
   /* Abgeleitet */
-  --forest-deep:#083529; --forest-soft:#E3EDE7; --cream-deep:#EADFCB; --paper:#FFFDF8; --ink:#16231E; --ink-soft:#4A5A52; --line:#E2D8C6;
+  --forest-deep:#083529; --forest-soft:#E3EDE7; --cream-deep:#EADFCB; --paper:#FFFDF8; --ink:#16231E; --ink-soft:#425149; --line:#E2D8C6;
   --sunny-soft:#FBE7A6; --coral-soft:#F9D6CD; --sky-soft:#E1EDF6; --ok:#2F7D4F; --err:#B4432B;
   /* Aliase für Subseiten (ausgabe.css / konto.css) */
   --gruen:var(--forest); --gruen-tief:var(--forest-deep); --gruen-hell:var(--forest-soft); --gelb:var(--sunny); --gelb-marker:var(--sunny-soft); --gelb-tief:#E0B43A;
